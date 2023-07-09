@@ -21,21 +21,19 @@ $contenu = $_POST['contenu'];
 
 $commentaireService->createCommentaire($produitId, $clientId, $contenu);
 
-// Redirection ou autre traitement
-// header('Location: confirmation.php');
-// exit();
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Ajouter un commentaire</title>
-    <!-- Lien vers la feuille de style Bootstrap -->
+ 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container mt-4">
         <h1>Ajouter un commentaire</h1>
+        <a href="logout.php">Se déconnecter</a>
         <form action="ajouter_commentaire.php" method="post">
             <input type="hidden" name="produitId" value="123">
             <input type="hidden" name="clientId" value="<?php echo $clientId; ?>">
@@ -46,8 +44,6 @@ $commentaireService->createCommentaire($produitId, $clientId, $contenu);
             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">Ajouter</button>
         </form>
     </div>
-
-    <!-- Modal de confirmation -->
     <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
