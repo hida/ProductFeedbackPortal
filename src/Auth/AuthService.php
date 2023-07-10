@@ -13,7 +13,10 @@ class AuthService implements AuthInterface {
     public function __construct(ClientRepositoryInterface $clientRepository) {
         $this->clientRepository = $clientRepository;        
         @ob_start();
-        session_start(); 
+      if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+  
     }
     
     public function isClientLoggedIn() {
@@ -21,8 +24,9 @@ class AuthService implements AuthInterface {
     }
     
     public function isClientAuthenticated($email, $motDePasse) {
+       
         $client = $this->clientRepository->getClientByEmail($email);
-        
+      
         if ($client && password_verify($motDePasse, $client->getMotDePasse())) {
             return true;
         } else {

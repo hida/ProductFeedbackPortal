@@ -7,6 +7,7 @@ require_once 'src/Auth/AuthService.php';
 <head>
     <title>Commentaires</title>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
      <h1>Commentaires du produit</h1>  
@@ -17,7 +18,7 @@ require_once 'src/Auth/AuthService.php';
             foreach ($commentaires as $commentaire) : ?>
             <div class="card mb-3">
                 <div class="card-header">
-                    <strong><?= $comment['id'] ?></strong>
+                    <strong><?= $commentaire->getId(); ?></strong>
                 </div>
                 <div class="card-body">
                     <p class="card-text"><?php echo $commentaire->getContenu(); ?></p>

@@ -1,9 +1,16 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once __DIR__ . '/../src/Auth/AuthInterface.php';
 require_once __DIR__ . '/../src/Auth/AuthService.php';
 require_once __DIR__ . '/../src/Client/ClientRepositoryInterface.php';
 require_once __DIR__ . '/../src/Client/ClientRepository.php';
-require_once __DIR__ . '/../config.php'; 
+require_once __DIR__ . '/../config.php';
 
 use Auth\AuthService;
 use Client\ClientRepository;
@@ -17,18 +24,24 @@ try {
 
 $authService = new AuthService(new ClientRepository($db));
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {   
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
-    $motDePasse = $_POST['motDePasse']; 
- 
-    if ($authService->isClientAuthenticated($email, $motDePasse)) {       
-    header('Location: templates/ajouter_commentaire.php');
-    exit();    
-    }else {       
+    $motDePasse = $_POST['motDePasse'];
+
+    if ($authService->isClientAuthenticated($email, $motDePasse)) {
+        $_SESSION['email'] = $email; 
+        header('Location: ajouter_commentaire.php');
+        exit();
+    } else {
         $_SESSION['error_message'] = "Nom d'utilisateur ou mot de passe incorrect.";
         header("Location: login.php");
         exit();
     }
+}
+
+if (isset($_SESSION['error_message'])) {
+    $errorMessage = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
 }
 ?>
 
@@ -36,64 +49,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Connexion</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f7f7f7;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
-        h1 {
-            text-align: center;
-            margin: 40px 0;
+        .container {
+            max-width: 400px;
+            margin-top: 100px;
         }
 
-        form {
-            width: 300px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
+        .card {
+            border: none;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        button[type="submit"] {
+        .card-header {
             background-color: #007bff;
             color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px 5px 0 0;
         }
 
-        button[type="submit"]:hover {
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
             background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
-    <h1>Connexion</h1>
-    <form action="login.php" method="post">
-        <label for="email">Email :</label>
-        <input type="text" name="email" required>
-        <label for="motDePasse">Mot de passe :</label>
-        <input type="password" name="motDePasse" required>
-        <button type="submit">Se connecter</button>
-    </form>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h3>Connexion</h3>
+            </div>
+            <div class="card-body">
+                <?php if (isset($errorMessage)): ?>
+                    <div class="alert alert-danger"><?php echo $errorMessage; ?></div>
+                <?php endif; ?>
+                <form action="login.php" method="post">
+                    <div class="form-group">
+                        <label for="email">Email :</label>
+                        <input type="text" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="motDePasse">Mot de passe :</label>
+                        <input type="password" class="form-control" name="motDePasse" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
