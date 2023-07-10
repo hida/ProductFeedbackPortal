@@ -37,9 +37,10 @@ $commentaireService->createCommentaire($produitId, $clientId, $contenu);
     <div class="container">
         <div class="card">
             <div class="card-header" style="background-color: rgb(187 187 187 / 53%) !important;">
-                <h1 class="display-medium text-white mb-0">Ajouter un commentaire</h1>
+                <h1 class="display-medium text-white mb-0" style="color: #3b4147 !important;">Ajouter un commentaire</h1>
                 <div class="text-right">
-                    <a href="../index.php" class="btn btn-outline-light">Se déconnecter</a>
+                    <a href="../index.php" class="btn btn-outline-light" style="color: #3b4147;
+    border-color: #3a5066;">Se déconnecter</a>
                 </div>
             </div>
             <div class="card-body">

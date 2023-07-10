@@ -20,4 +20,5 @@ INSERT INTO client (nom, email, motDePasse) VALUES ('Client 2', 'client2@example
 
 
 INSERT INTO commentaire (produitId, clientId, contenu, date) VALUES (1, 1, 'Commentaire 1', NOW());
-INSERT INTO commentaire (produitId, clientId, contenu, date) VALUES (1, 2, 'Commentaire 2', NOW());
+INSERT INTO commentaire (produitId, clientId, contenu, date) VALUES (2, 2, 'Commentaire 2', NOW());
+INSERT INTO `clients` (`id`, `nom`, `email`, `motDePasse`) VALUES (3, 'admin', 'admin@admin.com', '$2y$10$B5Ao/afOqciEgw/pZtjTAOh1sDQ6P6TF4yIvvbIEoPjhlVIm0GD4W');
